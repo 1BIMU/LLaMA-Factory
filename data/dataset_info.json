@@ -730,5 +730,18 @@
       "prompt": "content"
     },
     "folder": "python"
+  },
+  "webshop_agent": {
+    "file_name": "webshop_agent.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations"
+    },
+    "tags": {
+      "role_tag": "role",
+      "content_tag": "content",
+      "user_tag": "user",
+      "assistant_tag": "assistant"
+    }
   }
 }

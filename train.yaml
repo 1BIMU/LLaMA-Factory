@@ -1,0 +1,38 @@
+# 模型的本地路径
+model_name_or_path: /data1/wty/standard_models/Qwen2.5-7B/
+
+# 训练阶段: sft (Supervised Fine-Tuning)
+stage: sft
+do_train: true
+finetuning_type: full
+
+dataset: webshop_agent
+template: qwen
+cutoff_len: 16384 # 根据您的数据和显存调整
+overwrite_cache: true
+preprocessing_num_workers: 16
+
+# --- 输出和日志配置 ---
+output_dir: /data1/saves/Qwen2.5-7B/assistant_only
+logging_steps: 4
+save_steps: 4 # 全量微调保存一次会很大，请根据磁盘空间调整
+plot_loss: true
+overwrite_output_dir: true
+
+# --- 训练参数配置 (针对全量微调优化) ---
+# 全量微调非常消耗显存，需要减小 batch_size
+per_device_train_batch_size: 1 
+gradient_accumulation_steps: 8
+# 全量微调通常需要更小的学习率以保证训练稳定
+learning_rate: 2.0e-5 
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true # 如果您的显卡不支持bf16，可以改为 fp16: true
+
+# --- DDP 和评估配置 ---
+ddp_timeout: 180000000
+val_size: 0.1
+per_device_eval_batch_size: 1
+eval_strategy: steps
+eval_steps: 10
